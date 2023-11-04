@@ -10,9 +10,9 @@
 		48B7F73A2AF605E9001816A7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B7F7392AF605E9001816A7 /* AppDelegate.swift */; };
 		48B7F73C2AF605E9001816A7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B7F73B2AF605E9001816A7 /* SceneDelegate.swift */; };
 		48B7F73E2AF605E9001816A7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B7F73D2AF605E9001816A7 /* ViewController.swift */; };
-		48B7F7412AF605E9001816A7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 48B7F73F2AF605E9001816A7 /* Main.storyboard */; };
 		48B7F7432AF605EA001816A7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 48B7F7422AF605EA001816A7 /* Assets.xcassets */; };
 		48B7F7462AF605EA001816A7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 48B7F7442AF605EA001816A7 /* LaunchScreen.storyboard */; };
+		48B7F74E2AF60BD3001816A7 /* MailListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B7F74D2AF60BD3001816A7 /* MailListCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,10 +20,10 @@
 		48B7F7392AF605E9001816A7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		48B7F73B2AF605E9001816A7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		48B7F73D2AF605E9001816A7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		48B7F7402AF605E9001816A7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		48B7F7422AF605EA001816A7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		48B7F7452AF605EA001816A7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		48B7F7472AF605EA001816A7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		48B7F74D2AF60BD3001816A7 /* MailListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailListCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,7 +59,7 @@
 				48B7F7392AF605E9001816A7 /* AppDelegate.swift */,
 				48B7F73B2AF605E9001816A7 /* SceneDelegate.swift */,
 				48B7F73D2AF605E9001816A7 /* ViewController.swift */,
-				48B7F73F2AF605E9001816A7 /* Main.storyboard */,
+				48B7F74D2AF60BD3001816A7 /* MailListCell.swift */,
 				48B7F7422AF605EA001816A7 /* Assets.xcassets */,
 				48B7F7442AF605EA001816A7 /* LaunchScreen.storyboard */,
 				48B7F7472AF605EA001816A7 /* Info.plist */,
@@ -127,7 +127,6 @@
 			files = (
 				48B7F7462AF605EA001816A7 /* LaunchScreen.storyboard in Resources */,
 				48B7F7432AF605EA001816A7 /* Assets.xcassets in Resources */,
-				48B7F7412AF605E9001816A7 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,6 +137,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48B7F74E2AF60BD3001816A7 /* MailListCell.swift in Sources */,
 				48B7F73E2AF605E9001816A7 /* ViewController.swift in Sources */,
 				48B7F73A2AF605E9001816A7 /* AppDelegate.swift in Sources */,
 				48B7F73C2AF605E9001816A7 /* SceneDelegate.swift in Sources */,
@@ -147,14 +147,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		48B7F73F2AF605E9001816A7 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				48B7F7402AF605E9001816A7 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		48B7F7442AF605EA001816A7 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -297,7 +289,7 @@
 				INFOPLIST_FILE = "iOS Mail App (Clone)/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIMainStoryboardFile = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -325,7 +317,7 @@
 				INFOPLIST_FILE = "iOS Mail App (Clone)/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIMainStoryboardFile = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
