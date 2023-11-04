@@ -13,7 +13,37 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     override func viewDidLoad() {
         super.viewDidLoad()
         print("Loaded")
+        
+//        // Create a navigation controller with your view controller as the root view controller
+        let navigationController = UINavigationController(rootViewController: self)
+
+        // Configure the edit button
+        navigationItem.rightBarButtonItem = editButtonItem
+//
         configureMailListCollectionView()
+        
+        // Set the navigation bar background color to systemBackground
+            let appearance = UINavigationBarAppearance()
+            appearance.backgroundColor = .systemBackground
+            navigationController.navigationBar.standardAppearance = appearance
+            navigationController.navigationBar.scrollEdgeAppearance = appearance
+        
+        // Present the navigation controller
+            if let window = UIApplication.shared.windows.first {
+                window.rootViewController = navigationController
+            }
+    }
+//    
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        
+        mailListCollectionView.allowsMultipleSelection = editing
+        
+        if editing {
+            // Enable multi-selection, show checkboxes, etc.
+        } else {
+            // Disable multi-selection, hide checkboxes, etc.
+        }
     }
 }
     
