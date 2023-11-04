@@ -8,7 +8,6 @@
 import UIKit
 
 class MailListCell: UICollectionViewCell {
-    let identifier = "CellIdentifier"
     
     let senderLabel = UILabel()
     let subjectLabel = UILabel()
@@ -18,12 +17,12 @@ class MailListCell: UICollectionViewCell {
         super.init(frame: frame)
         ///viewDidLoad
 
-        senderLabel.font = UIFont.systemFont(ofSize: 16)
+        senderLabel.font = UIFont.boldSystemFont(ofSize: 18)
         senderLabel.textColor = UIColor.black
         senderLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(senderLabel)
 
-        subjectLabel.font = UIFont.boldSystemFont(ofSize: 18)
+        subjectLabel.font = UIFont.systemFont(ofSize: 16)
         subjectLabel.textColor = UIColor.black
         subjectLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(subjectLabel)
