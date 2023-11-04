@@ -42,9 +42,23 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         if editing {
             // Enable multi-selection, show checkboxes, etc.
             navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelEditing))
+            
+            // Show the checkboxes in each cell
+                    for indexPath in mailListCollectionView.indexPathsForVisibleItems {
+                        if let cell = mailListCollectionView.cellForItem(at: indexPath) as? MailListCell {
+                            cell.roundCheckbox.isHidden = false
+                        }
+                    }
         } else {
             // Disable multi-selection, hide checkboxes, etc.
             navigationItem.rightBarButtonItem = editButtonItem
+            
+            // Hide the checkboxes in each cell
+                    for indexPath in mailListCollectionView.indexPathsForVisibleItems {
+                        if let cell = mailListCollectionView.cellForItem(at: indexPath) as? MailListCell {
+                            cell.roundCheckbox.isHidden = true
+                        }
+                    }
         }
     }
     @objc func cancelEditing() {

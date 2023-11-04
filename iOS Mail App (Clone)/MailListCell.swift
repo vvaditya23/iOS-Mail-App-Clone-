@@ -12,6 +12,7 @@ class MailListCell: UICollectionViewCell {
     let senderLabel = UILabel()
     let subjectLabel = UILabel()
     let dateLabel = UILabel()
+    let roundCheckbox = UIView()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -48,6 +49,24 @@ class MailListCell: UICollectionViewCell {
             dateLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             dateLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
         ])
+        
+        // Configure the checkbox view
+            roundCheckbox.backgroundColor = .clear
+            roundCheckbox.layer.cornerRadius = 10
+            roundCheckbox.layer.borderWidth = 1
+            roundCheckbox.layer.borderColor = UIColor.systemGray.cgColor
+        roundCheckbox.isHidden = true
+
+            contentView.addSubview(roundCheckbox)
+
+        roundCheckbox.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                // Position the checkbox on the left side of the cell
+                roundCheckbox.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
+                roundCheckbox.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+                roundCheckbox.widthAnchor.constraint(equalToConstant: 20),
+                roundCheckbox.heightAnchor.constraint(equalToConstant: 20),
+            ])
     }
 
     required init?(coder aDecoder: NSCoder) {
