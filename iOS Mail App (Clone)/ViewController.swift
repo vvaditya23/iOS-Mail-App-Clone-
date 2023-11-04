@@ -41,9 +41,17 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         
         if editing {
             // Enable multi-selection, show checkboxes, etc.
+            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelEditing))
         } else {
             // Disable multi-selection, hide checkboxes, etc.
+            navigationItem.rightBarButtonItem = editButtonItem
         }
+    }
+    @objc func cancelEditing() {
+        // Implement any logic needed when the user cancels the editing mode.
+        // For example, deselect any selected cells, hide checkboxes, etc.
+        
+        setEditing(false, animated: true)
     }
 }
     
