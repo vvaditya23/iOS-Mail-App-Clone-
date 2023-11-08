@@ -62,7 +62,7 @@ class MailListCell: UICollectionViewCell {
         roundCheckbox.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
                 // Position the checkbox on the left side of the cell
-                roundCheckbox.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
+                roundCheckbox.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 0),
                 roundCheckbox.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
                 roundCheckbox.widthAnchor.constraint(equalToConstant: 20),
                 roundCheckbox.heightAnchor.constraint(equalToConstant: 20),
