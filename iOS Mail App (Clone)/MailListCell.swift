@@ -69,6 +69,21 @@ class MailListCell: UICollectionViewCell {
             ])
     }
 
+    override var isSelected: Bool {
+            didSet {
+                // Update the appearance of the cell and checkbox based on the selection state
+                if isSelected {
+                    // Cell is selected
+                    contentView.backgroundColor = .lightGray // Set the cell background to grey
+                    roundCheckbox.backgroundColor = .systemBlue // Set the checkbox background to blue
+                } else {
+                    // Cell is deselected
+                    contentView.backgroundColor = .white // Set the cell background to white or any other desired color
+                    roundCheckbox.backgroundColor = .clear // Set the checkbox background to clear
+                }
+            }
+        }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

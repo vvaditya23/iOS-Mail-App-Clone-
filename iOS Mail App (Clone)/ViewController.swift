@@ -41,8 +41,6 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
         
-        mailListCollectionView.allowsMultipleSelection = editing
-        
         if editing {
             // Enable multi-selection, show checkboxes, etc.
             navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelEditing))
@@ -56,6 +54,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
                             cell.roundCheckbox.isHidden = false
                         }
                     }
+            mailListCollectionView.allowsMultipleSelection = true
         } else {
             // Disable multi-selection, hide checkboxes, etc.
             navigationItem.rightBarButtonItem = editButtonItem
@@ -81,6 +80,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         // For example, deselect any selected cells, hide checkboxes, etc.
         
         setEditing(false, animated: true)
+        mailListCollectionView.allowsSelection = false
     }
 }
     
@@ -111,6 +111,7 @@ extension ViewController {
         
         mailListCollectionView.register(MailListCell.self, forCellWithReuseIdentifier: "CustomCell")
         mailListCollectionView.reloadData()
+        mailListCollectionView.allowsSelection = false
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
