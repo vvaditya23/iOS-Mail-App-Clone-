@@ -13,16 +13,30 @@ class MailListCell: UICollectionViewCell {
     let subjectLabel = UILabel()
     let dateLabel = UILabel()
     let roundCheckbox = UIView()
-
+    let separatorLine = UIView()
+    
     //leading constraints that are over-written when in editing mode
     private var senderLeadingConstraint: NSLayoutConstraint?
     private var subjectLeadingConstraint: NSLayoutConstraint?
     private var dateLeadingConstraint: NSLayoutConstraint?
+    private var separatorLeadingConstraint: NSLayoutConstraint?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         ///viewDidLoad
-
+        // Add custom separator line
+        separatorLine.backgroundColor = UIColor.separator
+                separatorLine.translatesAutoresizingMaskIntoConstraints = false
+                contentView.addSubview(separatorLine)
+        separatorLeadingConstraint = separatorLine.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16)
+        separatorLeadingConstraint?.isActive = true
+        NSLayoutConstraint.activate([
+//                    separatorLine.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+                    separatorLine.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+                    separatorLine.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+                    separatorLine.heightAnchor.constraint(equalToConstant: 1)
+                ])
+        
         senderLabel.font = UIFont.boldSystemFont(ofSize: 18)
         senderLabel.textColor = UIColor.black
         senderLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -106,11 +120,13 @@ extension MailListCell {
         senderLeadingConstraint?.constant = 50
         subjectLeadingConstraint?.constant = 50
         dateLeadingConstraint?.constant = 50
+        separatorLeadingConstraint?.constant = 50
     }
 
     func moveLabelsToOriginalPosition() {
         senderLeadingConstraint?.constant = 16
         subjectLeadingConstraint?.constant = 16
         dateLeadingConstraint?.constant = 16
+        separatorLeadingConstraint?.constant = 16
     }
 }

@@ -88,7 +88,8 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
 //MARK: Configure collection view
 extension ViewController {
     private func configureLayout() -> UICollectionViewLayout {
-        let config = UICollectionLayoutListConfiguration(appearance: .plain)
+        var config = UICollectionLayoutListConfiguration(appearance: .plain)
+        config.showsSeparators = false
         return UICollectionViewCompositionalLayout.list(using: config)
     }
 
