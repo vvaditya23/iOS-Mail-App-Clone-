@@ -20,6 +20,7 @@ class MailListCell: UICollectionViewCell {
     private var subjectLeadingConstraint: NSLayoutConstraint?
     private var dateLeadingConstraint: NSLayoutConstraint?
     private var separatorLeadingConstraint: NSLayoutConstraint?
+    private var roundCheckboxLeadingConstraint: NSLayoutConstraint?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -81,14 +82,15 @@ class MailListCell: UICollectionViewCell {
             roundCheckbox.layer.cornerRadius = 10
             roundCheckbox.layer.borderWidth = 1
             roundCheckbox.layer.borderColor = UIColor.systemGray.cgColor
-        roundCheckbox.isHidden = true
+//        roundCheckbox.isHidden = true
 
             contentView.addSubview(roundCheckbox)
-
+        roundCheckboxLeadingConstraint = roundCheckbox.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: -20)
+                roundCheckboxLeadingConstraint?.isActive = true
         roundCheckbox.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
                 // Position the checkbox on the left side of the cell
-                roundCheckbox.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 0),
+//                roundCheckbox.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
                 roundCheckbox.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
                 roundCheckbox.widthAnchor.constraint(equalToConstant: 20),
                 roundCheckbox.heightAnchor.constraint(equalToConstant: 20),
@@ -121,6 +123,7 @@ extension MailListCell {
         subjectLeadingConstraint?.constant = 50
         dateLeadingConstraint?.constant = 50
         separatorLeadingConstraint?.constant = 50
+        roundCheckboxLeadingConstraint?.constant = 10
     }
 
     func moveLabelsToOriginalPosition() {
@@ -128,5 +131,6 @@ extension MailListCell {
         subjectLeadingConstraint?.constant = 16
         dateLeadingConstraint?.constant = 16
         separatorLeadingConstraint?.constant = 16
+        roundCheckboxLeadingConstraint?.constant = -20
     }
 }

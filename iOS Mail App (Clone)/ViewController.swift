@@ -52,7 +52,8 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
                     for indexPath in mailListCollectionView.indexPathsForVisibleItems {
                         if let cell = mailListCollectionView.cellForItem(at: indexPath) as? MailListCell {
                             cell.moveLabelsToRight()
-                            cell.roundCheckbox.isHidden = false
+//                            cell.roundCheckbox.isHidden = false
+//                            cell.animateCheckboxAppearance()
                         }
                     }
             mailListCollectionView.allowsMultipleSelection = true
@@ -66,7 +67,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
                     for indexPath in mailListCollectionView.indexPathsForVisibleItems {
                         if let cell = mailListCollectionView.cellForItem(at: indexPath) as? MailListCell {
                             cell.moveLabelsToOriginalPosition()
-                            cell.roundCheckbox.isHidden = true
+//                            cell.roundCheckbox.isHidden = true
                         }
                     }
         }
