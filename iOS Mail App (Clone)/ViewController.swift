@@ -46,7 +46,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelEditing))
             
             //shift the list to right
-            collectionViewLeadingConstraint?.constant = 50
+//            collectionViewLeadingConstraint?.constant = 50
             
             // Show the checkboxes in each cell
                     for indexPath in mailListCollectionView.indexPathsForVisibleItems {
@@ -60,7 +60,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             navigationItem.rightBarButtonItem = editButtonItem
             
             //bring the list back to original position
-            collectionViewLeadingConstraint?.constant = 0
+//            collectionViewLeadingConstraint?.constant = 0
             
             // Hide the checkboxes in each cell
                     for indexPath in mailListCollectionView.indexPathsForVisibleItems {
