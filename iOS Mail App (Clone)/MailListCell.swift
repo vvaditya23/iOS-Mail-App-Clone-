@@ -124,6 +124,11 @@ extension MailListCell {
         dateLeadingConstraint?.constant = 50
         separatorLeadingConstraint?.constant = 50
         roundCheckboxLeadingConstraint?.constant = 10
+        
+        // Change alpha value to create a fading effect
+        UIView.animate(withDuration: 0.5, delay: 0.0, options: .curveEaseInOut, animations: {
+                    self.roundCheckbox.alpha = 1
+                }, completion: nil)
     }
 
     func moveLabelsToOriginalPosition() {
@@ -132,5 +137,10 @@ extension MailListCell {
         dateLeadingConstraint?.constant = 16
         separatorLeadingConstraint?.constant = 16
         roundCheckboxLeadingConstraint?.constant = -20
+        
+        // Change alpha value to create a fading effect
+        UIView.animate(withDuration: 0.5, delay: 0.0, options: .curveEaseInOut, animations: {
+                    self.roundCheckbox.alpha = 0
+                }, completion: nil)
     }
 }
