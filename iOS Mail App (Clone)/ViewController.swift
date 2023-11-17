@@ -12,7 +12,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     var mailListCollectionView: UICollectionView!
     
     //constraint to shift the list to right side while in editing mode
-    private var collectionViewLeadingConstraint: NSLayoutConstraint?
+//    private var collectionViewLeadingConstraint: NSLayoutConstraint?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,9 +48,10 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             //shift the list to right
 //            collectionViewLeadingConstraint?.constant = 50
             
-            // Show the checkboxes in each cell
+            // Show the checkboxes and move labels to right
                     for indexPath in mailListCollectionView.indexPathsForVisibleItems {
                         if let cell = mailListCollectionView.cellForItem(at: indexPath) as? MailListCell {
+                            cell.moveLabelsToRight()
                             cell.roundCheckbox.isHidden = false
                         }
                     }
@@ -62,15 +63,15 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             //bring the list back to original position
 //            collectionViewLeadingConstraint?.constant = 0
             
-            // Hide the checkboxes in each cell
                     for indexPath in mailListCollectionView.indexPathsForVisibleItems {
                         if let cell = mailListCollectionView.cellForItem(at: indexPath) as? MailListCell {
+                            cell.moveLabelsToOriginalPosition()
                             cell.roundCheckbox.isHidden = true
                         }
                     }
         }
         
-        // You may need to call layoutIfNeeded to apply the constraint changes
+        // need to call layoutIfNeeded to apply the constraint changes
             UIView.animate(withDuration: 0.3) {
                 self.view.layoutIfNeeded()
             }
@@ -98,13 +99,13 @@ extension ViewController {
         mailListCollectionView.dataSource = self
         view.addSubview(mailListCollectionView)
 
-        collectionViewLeadingConstraint = mailListCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
-            collectionViewLeadingConstraint?.isActive = true
+//        collectionViewLeadingConstraint = mailListCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
+//            collectionViewLeadingConstraint?.isActive = true
         
         mailListCollectionView.translatesAutoresizingMaskIntoConstraints = false
                 NSLayoutConstraint.activate([
                     mailListCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-//                    mailListCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                    mailListCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
                     mailListCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
                     mailListCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
                 ])

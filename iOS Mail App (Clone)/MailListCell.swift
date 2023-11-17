@@ -14,6 +14,11 @@ class MailListCell: UICollectionViewCell {
     let dateLabel = UILabel()
     let roundCheckbox = UIView()
 
+    //leading constraints that are over-written when in editing mode
+    private var senderLeadingConstraint: NSLayoutConstraint?
+    private var subjectLeadingConstraint: NSLayoutConstraint?
+    private var dateLeadingConstraint: NSLayoutConstraint?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         ///viewDidLoad
@@ -33,19 +38,26 @@ class MailListCell: UICollectionViewCell {
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(dateLabel)
 
-        // Add layout constraints for your labels
-        // Example constraints (customize as needed):
+        //declaring just the leading constraints so that it can be modified further
+        senderLeadingConstraint = senderLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16)
+                senderLeadingConstraint?.isActive = true
+        subjectLeadingConstraint = subjectLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16)
+        subjectLeadingConstraint?.isActive = true
+        dateLeadingConstraint = dateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16)
+        dateLeadingConstraint?.isActive = true
+        
+        //rest of the constraints
         NSLayoutConstraint.activate([
             senderLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
-            senderLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+//            senderLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             senderLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
 
             subjectLabel.topAnchor.constraint(equalTo: senderLabel.bottomAnchor, constant: 8),
-            subjectLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+//            subjectLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             subjectLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
 
             dateLabel.topAnchor.constraint(equalTo: subjectLabel.bottomAnchor, constant: 8),
-            dateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+//            dateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             dateLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             dateLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
         ])
@@ -86,5 +98,19 @@ class MailListCell: UICollectionViewCell {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+
+extension MailListCell {
+    func moveLabelsToRight() {
+        senderLeadingConstraint?.constant = 50
+        subjectLeadingConstraint?.constant = 50
+        dateLeadingConstraint?.constant = 50
+    }
+
+    func moveLabelsToOriginalPosition() {
+        senderLeadingConstraint?.constant = 16
+        subjectLeadingConstraint?.constant = 16
+        dateLeadingConstraint?.constant = 16
     }
 }
