@@ -79,7 +79,7 @@ class MailListCell: UICollectionViewCell {
         
         // Configure the checkbox view
             roundCheckbox.backgroundColor = .clear
-            roundCheckbox.layer.cornerRadius = 10
+        roundCheckbox.layer.cornerRadius = 12.5
             roundCheckbox.layer.borderWidth = 1
             roundCheckbox.layer.borderColor = UIColor.systemGray.cgColor
 //        roundCheckbox.isHidden = true
@@ -92,8 +92,8 @@ class MailListCell: UICollectionViewCell {
                 // Position the checkbox on the left side of the cell
 //                roundCheckbox.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
                 roundCheckbox.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-                roundCheckbox.widthAnchor.constraint(equalToConstant: 20),
-                roundCheckbox.heightAnchor.constraint(equalToConstant: 20),
+                roundCheckbox.widthAnchor.constraint(equalToConstant: 25),
+                roundCheckbox.heightAnchor.constraint(equalToConstant: 25),
             ])
     }
 
