@@ -10,6 +10,7 @@ import UIKit
 class ViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
     var mailListCollectionView: UICollectionView!
+    var isEditingMode = false
     
     //constraint to shift the list to right side while in editing mode
 //    private var collectionViewLeadingConstraint: NSLayoutConstraint?
@@ -42,6 +43,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         super.setEditing(editing, animated: animated)
         
         if editing {
+            isEditingMode = true
             // Enable multi-selection, show checkboxes, etc.
             navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelEditing))
             
@@ -58,6 +60,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
                     }
             mailListCollectionView.allowsMultipleSelection = true
         } else {
+            isEditingMode = false
             // Disable multi-selection, hide checkboxes, etc.
             navigationItem.rightBarButtonItem = editButtonItem
             
@@ -118,12 +121,22 @@ extension ViewController {
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return 100
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CustomCell", for: indexPath) as! MailListCell
-
+        
+        cell.resetState()
+        
+        if isEditingMode {
+                cell.moveLabelsToRight()
+//            mailListCollectionView.reloadData()
+            } else {
+                cell.moveLabelsToOriginalPosition()
+//                mailListCollectionView.reloadData()
+            }
+        
         cell.senderLabel.text = "some sender"
         cell.subjectLabel.text = "some subject"
         cell.dateLabel.text = "dd/mm/yyyy"

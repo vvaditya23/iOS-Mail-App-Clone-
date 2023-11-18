@@ -112,6 +112,11 @@ class MailListCell: UICollectionViewCell {
             }
         }
     
+    override func prepareForReuse() {
+            super.prepareForReuse()
+            resetState()
+        }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -143,4 +148,10 @@ extension MailListCell {
                     self.roundCheckbox.alpha = 0
                 }, completion: nil)
     }
+    
+    func resetState() {
+            // Reset any state changes made during editing mode
+            moveLabelsToOriginalPosition()
+            // ... reset any other state changes ...
+        }
 }
