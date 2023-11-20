@@ -79,7 +79,7 @@ class MailListCell: UICollectionViewCell {
         
         // Configure the checkbox view
             roundCheckbox.backgroundColor = .clear
-        roundCheckbox.layer.cornerRadius = 12.5
+        roundCheckbox.layer.cornerRadius = 10.5
             roundCheckbox.layer.borderWidth = 1
             roundCheckbox.layer.borderColor = UIColor.systemGray.cgColor
 //        roundCheckbox.isHidden = true
@@ -92,9 +92,10 @@ class MailListCell: UICollectionViewCell {
                 // Position the checkbox on the left side of the cell
 //                roundCheckbox.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
                 roundCheckbox.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-                roundCheckbox.widthAnchor.constraint(equalToConstant: 25),
-                roundCheckbox.heightAnchor.constraint(equalToConstant: 25),
+                roundCheckbox.widthAnchor.constraint(equalToConstant: 21),
+                roundCheckbox.heightAnchor.constraint(equalToConstant: 21),
             ])
+        roundCheckbox.clipsToBounds = true
     }
 
     override var isSelected: Bool {
@@ -103,11 +104,24 @@ class MailListCell: UICollectionViewCell {
                 if isSelected {
                     // Cell is selected
                     contentView.backgroundColor = .systemGray5 // Set the cell background to grey
-                    roundCheckbox.backgroundColor = .systemBlue // Set the checkbox background to blue
+//                    roundCheckbox.backgroundColor = .systemBlue // Set the checkbox background to blue
+                    let image = UIImage(systemName: "checkmark.circle.fill")
+//                    let image = UIImage(systemName: "")
+                    let imageView = UIImageView(image: image)
+                    imageView.frame = roundCheckbox.bounds
+                    imageView.contentMode = .scaleAspectFit
+                                imageView.layer.cornerRadius = roundCheckbox.layer.cornerRadius
+//                                imageView.clipsToBounds = true
+//                    imageView.backgroundColor = .red
+                    roundCheckbox.addSubview(imageView)
+                    roundCheckbox.layer.borderColor = UIColor.clear.cgColor
                 } else {
                     // Cell is deselected
                     contentView.backgroundColor = .white // Set the cell background to white or any other desired color
-                    roundCheckbox.backgroundColor = .clear // Set the checkbox background to clear
+//                    roundCheckbox.backgroundColor = .clear // Set the checkbox background to clear
+                    // Remove any existing subviews from roundCheckbox
+                                roundCheckbox.subviews.forEach { $0.removeFromSuperview() }
+                    roundCheckbox.layer.borderColor = UIColor.systemGray.cgColor
                 }
             }
         }
