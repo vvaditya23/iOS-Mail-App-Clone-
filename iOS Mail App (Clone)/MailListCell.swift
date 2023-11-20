@@ -102,7 +102,7 @@ class MailListCell: UICollectionViewCell {
                 // Update the appearance of the cell and checkbox based on the selection state
                 if isSelected {
                     // Cell is selected
-                    contentView.backgroundColor = .lightGray // Set the cell background to grey
+                    contentView.backgroundColor = .systemGray5 // Set the cell background to grey
                     roundCheckbox.backgroundColor = .systemBlue // Set the checkbox background to blue
                 } else {
                     // Cell is deselected
