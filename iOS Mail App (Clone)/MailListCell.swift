@@ -11,9 +11,11 @@ class MailListCell: UICollectionViewCell {
     
     let senderLabel = UILabel()
     let subjectLabel = UILabel()
-    let dateLabel = UILabel()
+    let mailContentLabel = UILabel()
     let roundCheckbox = UIView()
     let separatorLine = UIView()
+    let timeLabel = UILabel()
+    let arrowLabel = UILabel()
     
     //leading constraints that are over-written when in editing mode
     private var senderLeadingConstraint: NSLayoutConstraint?
@@ -21,6 +23,7 @@ class MailListCell: UICollectionViewCell {
     private var dateLeadingConstraint: NSLayoutConstraint?
     private var separatorLeadingConstraint: NSLayoutConstraint?
     private var roundCheckboxLeadingConstraint: NSLayoutConstraint?
+    private var arrowTrailingAnchor: NSLayoutConstraint?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -48,17 +51,27 @@ class MailListCell: UICollectionViewCell {
         subjectLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(subjectLabel)
 
-        dateLabel.font = UIFont.systemFont(ofSize: 12)
-        dateLabel.textColor = UIColor.gray
-        dateLabel.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(dateLabel)
+        mailContentLabel.font = UIFont.systemFont(ofSize: 12)
+        mailContentLabel.textColor = UIColor.gray
+        mailContentLabel.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(mailContentLabel)
 
+        timeLabel.font = UIFont.systemFont(ofSize: 12)
+        timeLabel.textColor = UIColor.gray
+        timeLabel.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(timeLabel)
+        
+        arrowLabel.font = UIFont.boldSystemFont(ofSize: 12)
+        arrowLabel.textColor = UIColor.gray
+        arrowLabel.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(arrowLabel)
+        
         //declaring just the leading constraints so that it can be modified further
         senderLeadingConstraint = senderLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16)
                 senderLeadingConstraint?.isActive = true
         subjectLeadingConstraint = subjectLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16)
         subjectLeadingConstraint?.isActive = true
-        dateLeadingConstraint = dateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16)
+        dateLeadingConstraint = mailContentLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16)
         dateLeadingConstraint?.isActive = true
         
         //rest of the constraints
@@ -71,10 +84,16 @@ class MailListCell: UICollectionViewCell {
 //            subjectLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             subjectLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
 
-            dateLabel.topAnchor.constraint(equalTo: subjectLabel.bottomAnchor, constant: 8),
+            mailContentLabel.topAnchor.constraint(equalTo: subjectLabel.bottomAnchor, constant: 8),
 //            dateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            dateLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            dateLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
+            mailContentLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            mailContentLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
+            
+            timeLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
+            timeLabel.trailingAnchor.constraint(equalTo: arrowLabel.trailingAnchor, constant: -15),
+            
+            arrowLabel.centerYAnchor.constraint(equalTo: timeLabel.centerYAnchor),
+//            arrowLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5)
         ])
         
         // Configure the checkbox view
@@ -95,6 +114,9 @@ class MailListCell: UICollectionViewCell {
                 roundCheckbox.widthAnchor.constraint(equalToConstant: 21),
                 roundCheckbox.heightAnchor.constraint(equalToConstant: 21),
             ])
+        arrowTrailingAnchor = arrowLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5)
+        arrowTrailingAnchor?.isActive = true
+        
         roundCheckbox.clipsToBounds = true
     }
 
@@ -143,6 +165,7 @@ extension MailListCell {
         dateLeadingConstraint?.constant = 50
         separatorLeadingConstraint?.constant = 50
         roundCheckboxLeadingConstraint?.constant = 10
+        arrowTrailingAnchor?.constant = 10
         
         // Change alpha value to create a fading effect
         UIView.animate(withDuration: 0.5, delay: 0.0, options: .curveEaseInOut, animations: {
@@ -156,6 +179,7 @@ extension MailListCell {
         dateLeadingConstraint?.constant = 16
         separatorLeadingConstraint?.constant = 16
         roundCheckboxLeadingConstraint?.constant = -20
+        arrowTrailingAnchor?.constant = -5
         
         // Change alpha value to create a fading effect
         UIView.animate(withDuration: 0.5, delay: 0.0, options: .curveEaseInOut, animations: {
