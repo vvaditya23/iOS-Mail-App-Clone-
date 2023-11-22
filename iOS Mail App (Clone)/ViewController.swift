@@ -137,7 +137,7 @@ extension ViewController {
         checkboxCollectionView.delegate = self
         checkboxCollectionView.dataSource = self
         view.addSubview(checkboxCollectionView)
-
+        checkboxCollectionView.showsVerticalScrollIndicator = false
 //        collectionViewLeadingConstraint = mailListCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
 //            collectionViewLeadingConstraint?.isActive = true
         checkboxCollectionViewLeadingConstraint = checkboxCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: -20)
