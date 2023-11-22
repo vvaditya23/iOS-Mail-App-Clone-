@@ -10,7 +10,12 @@ import UIKit
 class ViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
     var mailListCollectionView: UICollectionView!
+    var checkboxCollectionView: UICollectionView!
+    
     var isEditingMode = false
+    
+    var checkboxCollectionViewLeadingConstraint: NSLayoutConstraint?
+    var mailListCollectionViewLeadingConstraint: NSLayoutConstraint?
     
     //constraint to shift the list to right side while in editing mode
 //    private var collectionViewLeadingConstraint: NSLayoutConstraint?
@@ -26,6 +31,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         navigationItem.rightBarButtonItem = editButtonItem
 //
         configureMailListCollectionView()
+        configureCheckboxCollectionView()
         
         // Set the navigation bar background color to systemBackground
             let appearance = UINavigationBarAppearance()
@@ -53,9 +59,11 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             // Show the checkboxes and move labels to right
                     for indexPath in mailListCollectionView.indexPathsForVisibleItems {
                         if let cell = mailListCollectionView.cellForItem(at: indexPath) as? MailListCell {
-                            cell.moveLabelsToRight()
+//                            cell.moveLabelsToRight()
 //                            cell.roundCheckbox.isHidden = false
 //                            cell.animateCheckboxAppearance()
+                            checkboxCollectionViewLeadingConstraint?.constant = 0
+                            mailListCollectionViewLeadingConstraint?.constant = 50
                         }
                     }
             mailListCollectionView.allowsMultipleSelection = true
@@ -69,8 +77,10 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             
                     for indexPath in mailListCollectionView.indexPathsForVisibleItems {
                         if let cell = mailListCollectionView.cellForItem(at: indexPath) as? MailListCell {
-                            cell.moveLabelsToOriginalPosition()
+//                            cell.moveLabelsToOriginalPosition()
 //                            cell.roundCheckbox.isHidden = true
+                            checkboxCollectionViewLeadingConstraint?.constant = -20
+                            mailListCollectionViewLeadingConstraint?.constant = 0
                         }
                     }
         }
@@ -93,8 +103,8 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
 extension ViewController {
     private func configureLayout() -> UICollectionViewLayout {
         var config = UICollectionLayoutListConfiguration(appearance: .plain)
-        config.showsSeparators = false
-        return UICollectionViewCompositionalLayout.list(using: config)
+                config.showsSeparators = false
+                return UICollectionViewCompositionalLayout.list(using: config)
     }
 
     func configureMailListCollectionView() {
@@ -106,44 +116,91 @@ extension ViewController {
 
 //        collectionViewLeadingConstraint = mailListCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
 //            collectionViewLeadingConstraint?.isActive = true
+        mailListCollectionViewLeadingConstraint = mailListCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
+        mailListCollectionViewLeadingConstraint?.isActive = true
         
         mailListCollectionView.translatesAutoresizingMaskIntoConstraints = false
                 NSLayoutConstraint.activate([
                     mailListCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-                    mailListCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
                     mailListCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
                     mailListCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
                 ])
         
-        mailListCollectionView.register(MailListCell.self, forCellWithReuseIdentifier: "CustomCell")
+        mailListCollectionView.register(MailListCell.self, forCellWithReuseIdentifier: "CustomMailCell")
         mailListCollectionView.reloadData()
         mailListCollectionView.allowsSelection = false
     }
 
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 100
+    func configureCheckboxCollectionView() {
+        checkboxCollectionView = UICollectionView(frame: .zero, collectionViewLayout: configureLayout())
+        checkboxCollectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        checkboxCollectionView.delegate = self
+        checkboxCollectionView.dataSource = self
+        view.addSubview(checkboxCollectionView)
+
+//        collectionViewLeadingConstraint = mailListCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
+//            collectionViewLeadingConstraint?.isActive = true
+        checkboxCollectionViewLeadingConstraint = checkboxCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: -20)
+        checkboxCollectionViewLeadingConstraint?.isActive = true
+        
+        checkboxCollectionView.translatesAutoresizingMaskIntoConstraints = false
+                NSLayoutConstraint.activate([
+                    checkboxCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+                    checkboxCollectionView.trailingAnchor.constraint(equalTo: mailListCollectionView.leadingAnchor),
+                    checkboxCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+                ])
+        
+        checkboxCollectionView.register(CheckboxCollectionViewCell.self, forCellWithReuseIdentifier: "CustomCheckboxCell")
+        checkboxCollectionView.reloadData()
+        checkboxCollectionView.allowsSelection = false
     }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if collectionView == mailListCollectionView {
+            return 100
+        } else {
+            return 100
+        }
+    }
+    
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//        if collectionView == mailListCollectionView {
+//            return CGSize(width: view.frame.width, height: 100)
+//        } else {
+//            return CGSize(width: view.frame.width, height: 100)
+//        }
+//    }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CustomCell", for: indexPath) as! MailListCell
-        
-        cell.resetState()
-        
-        if isEditingMode {
-                cell.moveLabelsToRight()
-//            mailListCollectionView.reloadData()
+        if collectionView == mailListCollectionView {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CustomMailCell", for: indexPath) as! MailListCell
+            
+            cell.resetState()
+            
+            if isEditingMode {
+                //                cell.moveLabelsToRight()
+                //            mailListCollectionView.reloadData()
+                checkboxCollectionViewLeadingConstraint?.constant = 0
+                mailListCollectionViewLeadingConstraint?.constant = 50
             } else {
-                cell.moveLabelsToOriginalPosition()
-//                mailListCollectionView.reloadData()
+                //                cell.moveLabelsToOriginalPosition()
+                //                mailListCollectionView.reloadData()
+                checkboxCollectionViewLeadingConstraint?.constant = -20
+                mailListCollectionViewLeadingConstraint?.constant = 0
             }
-        
-        cell.senderLabel.text = "some sender"
-        cell.subjectLabel.text = "some subject"
-        cell.mailContentLabel.text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-        cell.timeLabel.text = "hh:mm"
-        cell.arrowLabel.text = ">"
-
-        return cell
+            
+            cell.senderLabel.text = "some sender"
+            cell.subjectLabel.text = "some subject"
+            cell.mailContentLabel.text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+            cell.timeLabel.text = "hh:mm"
+            cell.arrowLabel.text = ">"
+            
+            return cell
+        } else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CustomCheckboxCell", for: indexPath) as! CheckboxCollectionViewCell
+            
+            return cell
+        }
     }
 }
 
