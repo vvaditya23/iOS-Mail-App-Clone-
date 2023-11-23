@@ -12,7 +12,7 @@ class MailListCell: UICollectionViewCell {
     let senderLabel = UILabel()
     let subjectLabel = UILabel()
     let mailContentLabel = UILabel()
-    let roundCheckbox = UIView()
+    let roundCheckbox = UIImageView()
     let separatorLine = UIView()
     let timeLabel = UILabel()
     let arrowLabel = UILabel()
