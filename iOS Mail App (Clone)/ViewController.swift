@@ -14,7 +14,7 @@ enum PanDirection {
 class ViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     var selectedIndexPaths: Set<IndexPath> = []
-    
+    let topView = UIView()
     var mailListCollectionView: UICollectionView!
     var editButton : UIButton!
     
@@ -27,6 +27,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
+        configureTopView()
         configureMailListCollectionView()
         configureEditButton()
         
@@ -108,7 +109,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             
             selectedIndexPaths.removeAll()
             
-            mailListCollectionView.addGestureRecognizer(pan)
+//            mailListCollectionView.addGestureRecognizer(pan)
         }
     }
     
@@ -141,6 +142,18 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
 
 //MARK: configure UI elements
 extension ViewController {
+    
+    func configureTopView() {
+        topView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(topView)
+        NSLayoutConstraint.activate([
+            topView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
+            topView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
+            topView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
+            topView.heightAnchor.constraint(equalToConstant: 60)
+        ])
+    }
+    
     private func configureLayout() -> UICollectionViewLayout {
         var config = UICollectionLayoutListConfiguration(appearance: .plain)
         config.showsSeparators = false
@@ -164,7 +177,7 @@ extension ViewController {
         
         view.addSubview(mailListCollectionView)
         mailListCollectionView.translatesAutoresizingMaskIntoConstraints = false
-        mailListCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30).isActive = true
+        mailListCollectionView.topAnchor.constraint(equalTo: topView.bottomAnchor, constant: 0).isActive = true
         mailListCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: -60).isActive = true
         mailListCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         mailListCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
@@ -179,7 +192,7 @@ extension ViewController {
         
         view.addSubview(editButton)
         editButton.translatesAutoresizingMaskIntoConstraints = false
-        editButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 50).isActive = true
+        editButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
 //        editButton.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         editButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
         editButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
