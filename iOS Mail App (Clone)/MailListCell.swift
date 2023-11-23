@@ -9,24 +9,30 @@ import UIKit
 
 class NotesCell: UICollectionViewCell {
     
-    
-    var label = UILabel()
-    
     let senderLabel = UILabel()
     let subjectLabel = UILabel()
     let mailContentLabel = UILabel()
-    var circleView = UIView()
-    var circle = UIImageView()
+    var checkboxView = UIView()
+    var checkbox = UIImageView()
     let separatorLine = UIView()
     let timeLabel = UILabel()
     let arrowLabel = UILabel()
     
-    var panGesture: UIPanGestureRecognizer!
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
-//        setupPanGesture()
-        backgroundColor = .systemGray6
+//        backgroundColor = .systemGray6
+        
+        separatorLine.backgroundColor = UIColor.separator
+                separatorLine.translatesAutoresizingMaskIntoConstraints = false
+                contentView.addSubview(separatorLine)
+//        separatorLeadingConstraint = separatorLine.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16)
+//        separatorLeadingConstraint?.isActive = true
+        NSLayoutConstraint.activate([
+                    separatorLine.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 70),
+                    separatorLine.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+                    separatorLine.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+                    separatorLine.heightAnchor.constraint(equalToConstant: 1)
+                ])
         
         senderLabel.font = UIFont.boldSystemFont(ofSize: 18)
         senderLabel.textColor = UIColor.black
@@ -53,14 +59,14 @@ class NotesCell: UICollectionViewCell {
         arrowLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(arrowLabel)
         
-        circleView.backgroundColor = .systemGray3
-        addSubview(circleView)
+//        checkboxView.backgroundColor = .systemGray3
+        addSubview(checkboxView)
         
-        circleView.translatesAutoresizingMaskIntoConstraints = false
-        circleView.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        circleView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
-        circleView.widthAnchor.constraint(equalToConstant: 60).isActive = true
-        circleView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        checkboxView.translatesAutoresizingMaskIntoConstraints = false
+        checkboxView.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        checkboxView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+        checkboxView.widthAnchor.constraint(equalToConstant: 85).isActive = true
+        checkboxView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         
         NSLayoutConstraint.activate([
             senderLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
@@ -84,16 +90,18 @@ class NotesCell: UICollectionViewCell {
             arrowLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5)
         ])
         
-        circleView.addSubview(circle)
+        checkboxView.addSubview(checkbox)
         
-        circle.translatesAutoresizingMaskIntoConstraints = false
-        circle.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        circle.widthAnchor.constraint(equalToConstant: 30).isActive = true
-        circle.centerXAnchor.constraint(equalTo: circleView.centerXAnchor).isActive = true
-        circle.centerYAnchor.constraint(equalTo: circleView.centerYAnchor).isActive = true
-        
-        circle.layer.cornerRadius = 15
-        circle.backgroundColor = .white
+        checkbox.translatesAutoresizingMaskIntoConstraints = false
+        checkbox.heightAnchor.constraint(equalToConstant: 21).isActive = true
+        checkbox.widthAnchor.constraint(equalToConstant: 21).isActive = true
+        checkbox.centerXAnchor.constraint(equalTo: checkboxView.centerXAnchor).isActive = true
+        checkbox.centerYAnchor.constraint(equalTo: checkboxView.centerYAnchor).isActive = true
+        checkbox.backgroundColor = .clear
+        checkbox.layer.cornerRadius = 10.5
+        checkbox.layer.borderWidth = 1
+        checkbox.layer.borderColor = UIColor.systemGray.cgColor
+        checkbox.backgroundColor = .white
     }
     
     required init?(coder: NSCoder) {
