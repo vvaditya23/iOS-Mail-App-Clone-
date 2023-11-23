@@ -17,6 +17,10 @@ class MailListCell: UICollectionViewCell {
     let timeLabel = UILabel()
     let arrowLabel = UILabel()
     
+    let vc = ViewController()
+    
+    private var panGestureRecognizer: UIPanGestureRecognizer!
+    
     //leading constraints that are over-written when in editing mode
     private var senderLeadingConstraint: NSLayoutConstraint?
     private var subjectLeadingConstraint: NSLayoutConstraint?
@@ -28,6 +32,9 @@ class MailListCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         ///viewDidLoad
+        panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
+                roundCheckbox.addGestureRecognizer(panGestureRecognizer)
+        
         // Add custom separator line
         separatorLine.backgroundColor = UIColor.separator
                 separatorLine.translatesAutoresizingMaskIntoConstraints = false
@@ -191,5 +198,56 @@ extension MailListCell {
             // Reset any state changes made during editing mode
             moveLabelsToOriginalPosition()
             // ... reset any other state changes ...
+        }
+}
+
+extension MailListCell {
+    @objc func handlePanGesture(_ sender: UIPanGestureRecognizer) {
+        guard vc.isEditingMode else {
+                return
+            }
+
+            let translation = sender.translation(in: self)
+
+            switch sender.state {
+            case .changed:
+                // Update the checkbox's position based on the user's finger movement
+                roundCheckboxLeadingConstraint?.constant += translation.x
+
+                // Ensure the checkbox stays within the cell bounds
+                if roundCheckboxLeadingConstraint!.constant < -20 {
+                    roundCheckboxLeadingConstraint?.constant = -20
+                } else if roundCheckboxLeadingConstraint!.constant > 10 {
+                    roundCheckboxLeadingConstraint?.constant = 10
+                }
+
+                // Apply the constraint changes
+                layoutIfNeeded()
+
+            case .ended:
+                // Determine if the user dragged enough to select the cell
+                let isSelected = roundCheckboxLeadingConstraint!.constant > -5
+                setSelected(isSelected, animated: true)
+
+            default:
+                break
+            }
+
+            // Reset the translation to avoid cumulative changes
+            sender.setTranslation(.zero, in: self)
+        }
+
+        private func setSelected(_ selected: Bool, animated: Bool) {
+            if selected {
+                // Perform the necessary updates when the cell is selected
+                isSelected = true
+                // ... (any additional updates)
+            } else {
+                // Perform the necessary updates when the cell is deselected
+                isSelected = false
+                // ... (any additional updates)
+            }
+
+            // Notify the delegate or handle any other logic related to cell selection
         }
 }
