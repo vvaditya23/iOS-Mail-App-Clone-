@@ -11,6 +11,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     
     var mailListCollectionView: UICollectionView!
     var isEditingMode = false
+    var selectedIndexPaths: Set<IndexPath> = []
     
     //constraint to shift the list to right side while in editing mode
 //    private var collectionViewLeadingConstraint: NSLayoutConstraint?
@@ -90,11 +91,13 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
 }
     
 //MARK: Configure collection view
-extension ViewController {
+extension ViewController: UICollectionViewDelegateFlowLayout {
     private func configureLayout() -> UICollectionViewLayout {
-        var config = UICollectionLayoutListConfiguration(appearance: .plain)
-        config.showsSeparators = false
-        return UICollectionViewCompositionalLayout.list(using: config)
+        let layout = UICollectionViewFlowLayout()
+                layout.minimumInteritemSpacing = 10
+                layout.minimumLineSpacing = 10
+                layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+                return layout
     }
 
     func configureMailListCollectionView() {
@@ -124,6 +127,10 @@ extension ViewController {
         return 100
     }
 
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: view.frame.width, height: 100)
+    }
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CustomCell", for: indexPath) as! MailListCell
         
