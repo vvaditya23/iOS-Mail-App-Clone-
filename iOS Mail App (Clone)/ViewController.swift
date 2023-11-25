@@ -154,7 +154,7 @@ extension ViewController {
             topView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
             topView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
             topView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
-            topView.heightAnchor.constraint(equalToConstant: 20)
+            topView.heightAnchor.constraint(equalToConstant: 30)
         ])
     }
     
