@@ -145,12 +145,13 @@ extension ViewController {
     
     func configureTopView() {
         topView.translatesAutoresizingMaskIntoConstraints = false
+//        topView.backgroundColor = .red
         view.addSubview(topView)
         NSLayoutConstraint.activate([
-            topView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
+            topView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
             topView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
             topView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
-            topView.heightAnchor.constraint(equalToConstant: 60)
+            topView.heightAnchor.constraint(equalToConstant: 20)
         ])
     }
     
@@ -192,7 +193,8 @@ extension ViewController {
         
         view.addSubview(editButton)
         editButton.translatesAutoresizingMaskIntoConstraints = false
-        editButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
+        editButton.centerYAnchor.constraint(equalTo: topView.centerYAnchor).isActive = true
+//        editButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5).isActive = true
 //        editButton.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         editButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
         editButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
