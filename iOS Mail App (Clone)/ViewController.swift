@@ -193,7 +193,7 @@ extension ViewController {
         editButton.centerYAnchor.constraint(equalTo: topView.centerYAnchor).isActive = true
 //        editButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5).isActive = true
 //        editButton.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        editButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+        editButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
         editButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
 }
