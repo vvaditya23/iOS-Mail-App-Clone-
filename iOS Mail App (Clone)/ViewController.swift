@@ -86,7 +86,8 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         if isEditingMode {
             editButton.setTitle("Edit", for: .normal)
             UIView.animate(withDuration: 0.36) {
-                self.mailListCollectionView.transform = .identity
+                self.mailListCollectionView.transform = CGAffineTransform(translationX: 0, y: 0)
+                self.mailListCollectionView.scrollIndicatorInsets = .zero
             }
             isEditingMode = false
             mailListCollectionView.removeGestureRecognizer(pan)
@@ -103,6 +104,8 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             editButton.setTitle("Cancel", for: .normal)
             UIView.animate(withDuration: 0.36) {
                 self.mailListCollectionView.transform = CGAffineTransform(translationX: 35, y: 0)
+                let inset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 35)
+                self.mailListCollectionView.scrollIndicatorInsets = inset
             }
             isEditingMode = true
             // De-selecting all cells
