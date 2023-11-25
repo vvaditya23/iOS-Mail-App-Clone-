@@ -7,22 +7,22 @@
 
 import UIKit
 
-enum PanDirection {
-    case up, down
-}
+//enum PanDirection {
+//    case up, down
+//}
 
 class ViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
-    var selectedIndexPaths: Set<IndexPath> = []
+//    var selectedIndexPaths: Set<IndexPath> = []
     let topView = UIView()
     var mailListCollectionView: UICollectionView!
     var editButton : UIButton!
     
     var isEditingMode = false
         
-    var pan : UIPanGestureRecognizer!
-    var initialIndexPath: IndexPath?
-    var lastDirection: PanDirection = .down // Variable to track the last detected direction
+//    var pan : UIPanGestureRecognizer!
+//    var initialIndexPath: IndexPath?
+//    var lastDirection: PanDirection = .down // Variable to track the last detected direction
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,40 +31,37 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         configureMailListCollectionView()
         configureEditButton()
         
-        pan = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
+//        pan = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
     }
 
-    func calculateDirection(of gesture: UIPanGestureRecognizer) -> PanDirection {
-        let swipeVelocity = gesture.velocity(in: mailListCollectionView)
-        return swipeVelocity.y < 0 ? .up : .down
-    }
+//    func calculateDirection(of gesture: UIPanGestureRecognizer) -> PanDirection {
+//        let swipeVelocity = gesture.velocity(in: mailListCollectionView)
+//        return swipeVelocity.y < 0 ? .up : .down
+//    }
 
-    func deselectCells(from startIndexPath: IndexPath, to endIndexPath: IndexPath) {
-        let indicesToDeselect = (min(startIndexPath.row, endIndexPath.row)...max(startIndexPath.row, endIndexPath.row))
-            .map { IndexPath(row: $0, section: startIndexPath.section) }
-        
-        for indexPath in indicesToDeselect {
-            if !selectedIndexPaths.contains(indexPath) {
-                selectedIndexPaths.insert(indexPath)
-                updateCellSelection(at: indexPath, isSelected: true)
-            }
-        }
-        
-        let indicesToKeepSelected = (mailListCollectionView.indexPathsForVisibleItems).filter { !indicesToDeselect.contains($0) }
-        for indexPath in indicesToKeepSelected {
-            if selectedIndexPaths.contains(indexPath) {
-                selectedIndexPaths.remove(indexPath)
-                updateCellSelection(at: indexPath, isSelected: false)
-            }
-        }
-    }
+//    func deselectCells(from startIndexPath: IndexPath, to endIndexPath: IndexPath) {
+//        let indicesToDeselect = (min(startIndexPath.row, endIndexPath.row)...max(startIndexPath.row, endIndexPath.row))
+//            .map { IndexPath(row: $0, section: startIndexPath.section) }
+//        
+//        for indexPath in indicesToDeselect {
+//            if !selectedIndexPaths.contains(indexPath) {
+//                selectedIndexPaths.insert(indexPath)
+//                updateCellSelection(at: indexPath, isSelected: true)
+//            }
+//        }
+//        
+//        let indicesToKeepSelected = (mailListCollectionView.indexPathsForVisibleItems).filter { !indicesToDeselect.contains($0) }
+//        for indexPath in indicesToKeepSelected {
+//            if selectedIndexPaths.contains(indexPath) {
+//                selectedIndexPaths.remove(indexPath)
+//                updateCellSelection(at: indexPath, isSelected: false)
+//            }
+//        }
+//    }
 
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! NotesCell
-//        cell.backgroundColor = .systemGray5
-//        cell.checkbox.backgroundColor = .white
-//        cell.checkboxView.backgroundColor = .systemGray4
         
         cell.senderLabel.text = "some sender"
         cell.subjectLabel.text = "some subject"
@@ -90,15 +87,15 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
                 self.mailListCollectionView.scrollIndicatorInsets = .zero
             }
             isEditingMode = false
-            mailListCollectionView.removeGestureRecognizer(pan)
+//            mailListCollectionView.removeGestureRecognizer(pan)
             
-            for indexPath in selectedIndexPaths {
-                mailListCollectionView.deselectItem(at: indexPath, animated: false)
-                if let cell = mailListCollectionView.cellForItem(at: indexPath) as? NotesCell {
-                    cell.checkbox.image = nil
-//                    cell.backgroundColor = .systemGray6
-                }
-            }
+//            for indexPath in selectedIndexPaths {
+//                mailListCollectionView.deselectItem(at: indexPath, animated: false)
+//                if let cell = mailListCollectionView.cellForItem(at: indexPath) as? NotesCell {
+//                    cell.checkbox.image = nil
+////                    cell.backgroundColor = .systemGray6
+//                }
+//            }
         }
         else {
             editButton.setTitle("Cancel", for: .normal)
@@ -110,7 +107,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             isEditingMode = true
             // De-selecting all cells
             
-            selectedIndexPaths.removeAll()
+//            selectedIndexPaths.removeAll()
             
 //            mailListCollectionView.addGestureRecognizer(pan)
         }
@@ -120,7 +117,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
                 
         if isEditingMode {
             print("Select")
-            selectedIndexPaths.insert(indexPath)
+//            selectedIndexPaths.insert(indexPath)
             updateCellSelection(at: indexPath, isSelected: true)
         }
     }
@@ -128,7 +125,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         if isEditingMode {
             print("De - Select")
-            selectedIndexPaths.remove(indexPath)
+//            selectedIndexPaths.remove(indexPath)
             updateCellSelection(at: indexPath, isSelected: false)
         }
     }
@@ -145,7 +142,6 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
 
 //MARK: configure UI elements
 extension ViewController {
-    
     func configureTopView() {
         topView.translatesAutoresizingMaskIntoConstraints = false
 //        topView.backgroundColor = .red
@@ -165,8 +161,6 @@ extension ViewController {
     }
     
     func configureMailListCollectionView() {
-//        let layout = UICollectionViewFlowLayout()
-//        layout.scrollDirection = .vertical
         mailListCollectionView = UICollectionView(frame: .zero, collectionViewLayout: configureLayout())
         mailListCollectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         mailListCollectionView.delegate = self
@@ -204,33 +198,33 @@ extension ViewController {
     }
 }
 
-extension ViewController {
-    @objc func handlePan(gesture: UIPanGestureRecognizer) {
-        let location = gesture.location(in: mailListCollectionView)
-        
-        switch gesture.state {
-        case .began:
-            if let indexPath = mailListCollectionView.indexPathForItem(at: location) {
-                initialIndexPath = indexPath
-                selectedIndexPaths.insert(indexPath)
-                updateCellSelection(at: indexPath, isSelected: true)
-            }
-        case .changed:
-            if let initialIndexPath = initialIndexPath {
-                if let indexPath = mailListCollectionView.indexPathForItem(at: location), indexPath != initialIndexPath {
-                    let currentDirection = calculateDirection(of: gesture)
-                    
-                    if currentDirection == .down {
-                        deselectCells(from: indexPath, to: initialIndexPath)
-                    } else {
-                        deselectCells(from: initialIndexPath, to: indexPath)
-                    }
-                }
-            }
-        case .ended, .cancelled:
-            initialIndexPath = nil
-        default:
-            break
-        }
-    }
-}
+//extension ViewController {
+//    @objc func handlePan(gesture: UIPanGestureRecognizer) {
+//        let location = gesture.location(in: mailListCollectionView)
+//        
+//        switch gesture.state {
+//        case .began:
+//            if let indexPath = mailListCollectionView.indexPathForItem(at: location) {
+//                initialIndexPath = indexPath
+//                selectedIndexPaths.insert(indexPath)
+//                updateCellSelection(at: indexPath, isSelected: true)
+//            }
+//        case .changed:
+//            if let initialIndexPath = initialIndexPath {
+//                if let indexPath = mailListCollectionView.indexPathForItem(at: location), indexPath != initialIndexPath {
+//                    let currentDirection = calculateDirection(of: gesture)
+//                    
+//                    if currentDirection == .down {
+//                        deselectCells(from: indexPath, to: initialIndexPath)
+//                    } else {
+//                        deselectCells(from: initialIndexPath, to: indexPath)
+//                    }
+//                }
+//            }
+//        case .ended, .cancelled:
+//            initialIndexPath = nil
+//        default:
+//            break
+//        }
+//    }
+//}
