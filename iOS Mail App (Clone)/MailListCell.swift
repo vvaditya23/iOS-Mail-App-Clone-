@@ -12,7 +12,8 @@ class MailListCell: UICollectionViewCell {
     let senderLabel = UILabel()
     let subjectLabel = UILabel()
     let mailContentLabel = UILabel()
-    let roundCheckbox = UIView()
+    var checkboxView = UIView()
+    var checkbox = UIImageView()
     let separatorLine = UIView()
     let timeLabel = UILabel()
     let arrowLabel = UILabel()
@@ -31,18 +32,16 @@ class MailListCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        ///viewDidLoad
-        panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
-                roundCheckbox.addGestureRecognizer(panGestureRecognizer)
+//        backgroundColor = .systemGray6
         
         // Add custom separator line
         separatorLine.backgroundColor = UIColor.separator
                 separatorLine.translatesAutoresizingMaskIntoConstraints = false
                 contentView.addSubview(separatorLine)
-        separatorLeadingConstraint = separatorLine.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16)
-        separatorLeadingConstraint?.isActive = true
+//        separatorLeadingConstraint = separatorLine.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16)
+//        separatorLeadingConstraint?.isActive = true
         NSLayoutConstraint.activate([
-//                    separatorLine.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+                    separatorLine.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 70),
                     separatorLine.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
                     separatorLine.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
                     separatorLine.heightAnchor.constraint(equalToConstant: 1)
@@ -73,181 +72,90 @@ class MailListCell: UICollectionViewCell {
         arrowLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(arrowLabel)
         
-        //declaring just the leading constraints so that it can be modified further
-        senderLeadingConstraint = senderLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16)
-                senderLeadingConstraint?.isActive = true
-        subjectLeadingConstraint = subjectLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16)
-        subjectLeadingConstraint?.isActive = true
-        dateLeadingConstraint = mailContentLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16)
-        dateLeadingConstraint?.isActive = true
+//        checkboxView.backgroundColor = .systemGray3
+        addSubview(checkboxView)
         
-        //rest of the constraints
+        checkboxView.translatesAutoresizingMaskIntoConstraints = false
+        checkboxView.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        checkboxView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+        checkboxView.widthAnchor.constraint(equalToConstant: 85).isActive = true
+        checkboxView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        
         NSLayoutConstraint.activate([
             senderLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
-//            senderLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            senderLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 70),
             senderLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
 
             subjectLabel.topAnchor.constraint(equalTo: senderLabel.bottomAnchor, constant: 8),
-//            subjectLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            subjectLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 70),
             subjectLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
 
             mailContentLabel.topAnchor.constraint(equalTo: subjectLabel.bottomAnchor, constant: 8),
 //            dateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             mailContentLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            mailContentLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 70),
             mailContentLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
             
             timeLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
             timeLabel.trailingAnchor.constraint(equalTo: arrowLabel.trailingAnchor, constant: -15),
             
             arrowLabel.centerYAnchor.constraint(equalTo: timeLabel.centerYAnchor),
-//            arrowLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5)
+            arrowLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5)
         ])
         
-        // Configure the checkbox view
-            roundCheckbox.backgroundColor = .clear
-        roundCheckbox.layer.cornerRadius = 10.5
-            roundCheckbox.layer.borderWidth = 1
-            roundCheckbox.layer.borderColor = UIColor.systemGray.cgColor
-//        roundCheckbox.isHidden = true
-
-            contentView.addSubview(roundCheckbox)
-        roundCheckboxLeadingConstraint = roundCheckbox.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: -20)
-                roundCheckboxLeadingConstraint?.isActive = true
-        roundCheckbox.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                // Position the checkbox on the left side of the cell
-//                roundCheckbox.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
-                roundCheckbox.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-                roundCheckbox.widthAnchor.constraint(equalToConstant: 21),
-                roundCheckbox.heightAnchor.constraint(equalToConstant: 21),
-            ])
-        arrowTrailingAnchor = arrowLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5)
-        arrowTrailingAnchor?.isActive = true
+        checkboxView.addSubview(checkbox)
         
-        roundCheckbox.clipsToBounds = true
+        checkbox.translatesAutoresizingMaskIntoConstraints = false
+        checkbox.heightAnchor.constraint(equalToConstant: 21).isActive = true
+        checkbox.widthAnchor.constraint(equalToConstant: 21).isActive = true
+        checkbox.centerXAnchor.constraint(equalTo: checkboxView.centerXAnchor).isActive = true
+        checkbox.centerYAnchor.constraint(equalTo: checkboxView.centerYAnchor).isActive = true
+        checkbox.backgroundColor = .clear
+        checkbox.layer.cornerRadius = 10.5
+        checkbox.layer.borderWidth = 1
+        checkbox.layer.borderColor = UIColor.systemGray.cgColor
+        checkbox.backgroundColor = .white
     }
-
-    override var isSelected: Bool {
-            didSet {
-                // Update the appearance of the cell and checkbox based on the selection state
-                if isSelected {
-                    // Cell is selected
-                    contentView.backgroundColor = .systemGray5 // Set the cell background to grey
-//                    roundCheckbox.backgroundColor = .systemBlue // Set the checkbox background to blue
-                    let image = UIImage(systemName: "checkmark.circle.fill")
-//                    let image = UIImage(systemName: "")
-                    let imageView = UIImageView(image: image)
-                    imageView.frame = roundCheckbox.bounds
-                    imageView.contentMode = .scaleAspectFit
-                                imageView.layer.cornerRadius = roundCheckbox.layer.cornerRadius
-//                                imageView.clipsToBounds = true
-//                    imageView.backgroundColor = .red
-                    roundCheckbox.addSubview(imageView)
-                    roundCheckbox.layer.borderColor = UIColor.clear.cgColor
-                } else {
-                    // Cell is deselected
-                    contentView.backgroundColor = .white // Set the cell background to white or any other desired color
-//                    roundCheckbox.backgroundColor = .clear // Set the checkbox background to clear
-                    // Remove any existing subviews from roundCheckbox
-                                roundCheckbox.subviews.forEach { $0.removeFromSuperview() }
-                    roundCheckbox.layer.borderColor = UIColor.systemGray.cgColor
-                }
-            }
-        }
     
-    override func prepareForReuse() {
-            super.prepareForReuse()
-            resetState()
-        }
-    
-    required init?(coder aDecoder: NSCoder) {
+    required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
 
-extension MailListCell {
-    func moveLabelsToRight() {
-        senderLeadingConstraint?.constant = 50
-        subjectLeadingConstraint?.constant = 50
-        dateLeadingConstraint?.constant = 50
-        separatorLeadingConstraint?.constant = 50
-        roundCheckboxLeadingConstraint?.constant = 10
-        arrowTrailingAnchor?.constant = 10
-        
-        // Change alpha value to create a fading effect
-        UIView.animate(withDuration: 0.5, delay: 0.0, options: .curveEaseInOut, animations: {
-                    self.roundCheckbox.alpha = 1
-                }, completion: nil)
-    }
-
-    func moveLabelsToOriginalPosition() {
-        senderLeadingConstraint?.constant = 16
-        subjectLeadingConstraint?.constant = 16
-        dateLeadingConstraint?.constant = 16
-        separatorLeadingConstraint?.constant = 16
-        roundCheckboxLeadingConstraint?.constant = -20
-        arrowTrailingAnchor?.constant = -5
-        
-        // Change alpha value to create a fading effect
-        UIView.animate(withDuration: 0.5, delay: 0.0, options: .curveEaseInOut, animations: {
-                    self.roundCheckbox.alpha = 0
-                }, completion: nil)
-    }
-    
-    func resetState() {
-            // Reset any state changes made during editing mode
-            moveLabelsToOriginalPosition()
-            // ... reset any other state changes ...
-        }
-}
-
-extension MailListCell {
-    @objc func handlePanGesture(_ sender: UIPanGestureRecognizer) {
-        guard vc.isEditingMode else {
-                return
-            }
-
-            let translation = sender.translation(in: self)
-
-            switch sender.state {
-            case .changed:
-                // Update the checkbox's position based on the user's finger movement
-                roundCheckboxLeadingConstraint?.constant += translation.x
-
-                // Ensure the checkbox stays within the cell bounds
-                if roundCheckboxLeadingConstraint!.constant < -20 {
-                    roundCheckboxLeadingConstraint?.constant = -20
-                } else if roundCheckboxLeadingConstraint!.constant > 10 {
-                    roundCheckboxLeadingConstraint?.constant = 10
-                }
-
-                // Apply the constraint changes
-                layoutIfNeeded()
-
-            case .ended:
-                // Determine if the user dragged enough to select the cell
-                let isSelected = roundCheckboxLeadingConstraint!.constant > -5
-                setSelected(isSelected, animated: true)
-
-            default:
-                break
-            }
-
-            // Reset the translation to avoid cumulative changes
-            sender.setTranslation(.zero, in: self)
-        }
-
-        private func setSelected(_ selected: Bool, animated: Bool) {
-            if selected {
-                // Perform the necessary updates when the cell is selected
-                isSelected = true
-                // ... (any additional updates)
-            } else {
-                // Perform the necessary updates when the cell is deselected
-                isSelected = false
-                // ... (any additional updates)
-            }
-
-            // Notify the delegate or handle any other logic related to cell selection
-        }
-}
+//extension NotesCell {
+//    private func setupPanGesture() {
+//            panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture))
+//            circle.addGestureRecognizer(panGesture)
+//            circle.isUserInteractionEnabled = true
+//        }
+//    
+//    @objc func handlePan(gesture: UIPanGestureRecognizer) {
+//        let location = gesture.location(in: mailListCollectionView)
+//        
+//        switch gesture.state {
+//        case .began:
+//            if let indexPath = mailListCollectionView.indexPathForItem(at: location) {
+//                initialIndexPath = indexPath
+//                selectedIndexPaths.insert(indexPath)
+//                updateCellSelection(at: indexPath, isSelected: true)
+//            }
+//        case .changed:
+//            if let initialIndexPath = initialIndexPath {
+//                if let indexPath = mailListCollectionView.indexPathForItem(at: location), indexPath != initialIndexPath {
+//                    let currentDirection = calculateDirection(of: gesture)
+//                    
+//                    if currentDirection == .down {
+//                        deselectCells(from: indexPath, to: initialIndexPath)
+//                    } else {
+//                        deselectCells(from: initialIndexPath, to: indexPath)
+//                    }
+//                }
+//            }
+//        case .ended, .cancelled:
+//            initialIndexPath = nil
+//        default:
+//            break
+//        }
+//    }
+//
+//}
