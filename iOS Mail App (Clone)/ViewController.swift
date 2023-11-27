@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+class ViewController: UIViewController {
     
     let topView = UIView()
     var mailListCollectionView: UICollectionView!
@@ -22,81 +22,10 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         configureMailListCollectionView()
         configureEditButton()
     }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! MailListCell
-        
-        cell.senderLabel.text = "some sender"
-        cell.subjectLabel.text = "some subject"
-        cell.mailContentLabel.text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-        cell.timeLabel.text = "hh:mm"
-        cell.arrowLabel.text = ">"
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width + 60, height: 90)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 100
-    }
-    
-    @objc func handleEditButton() {
-        if isEditingMode {
-            editButton.setTitle("Edit", for: .normal)
-            UIView.animate(withDuration: 0.36) {
-                self.mailListCollectionView.transform = CGAffineTransform(translationX: 0, y: 0)
-                self.mailListCollectionView.scrollIndicatorInsets = .zero
-            }
-            isEditingMode = false
-            
-            //change the background color of cells to clear after selecting cancel while in editing mode
-            if let selectedIndexPaths = mailListCollectionView.indexPathsForSelectedItems {
-                for indexPath in selectedIndexPaths {
-                    mailListCollectionView.deselectItem(at: indexPath, animated: false)
-                    updateCellSelection(at: indexPath, isSelected: false)
-                }
-            }
-        }
-        else {
-            editButton.setTitle("Cancel", for: .normal)
-            UIView.animate(withDuration: 0.36) {
-                self.mailListCollectionView.transform = CGAffineTransform(translationX: 35, y: 0)
-                let inset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 35)
-                self.mailListCollectionView.scrollIndicatorInsets = inset
-            }
-            isEditingMode = true
-        }
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        if isEditingMode {
-            print("Select")
-            updateCellSelection(at: indexPath, isSelected: true)
-        }
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        if isEditingMode {
-            print("De - Select")
-            updateCellSelection(at: indexPath, isSelected: false)
-        }
-    }
-    
-    func updateCellSelection(at indexPath: IndexPath, isSelected: Bool) {
-        if let cell = mailListCollectionView.cellForItem(at: indexPath) as? MailListCell {
-            let tickmark = UIImage(systemName: "checkmark.circle.fill")
-            cell.checkbox.image = isSelected ? tickmark : nil
-            cell.checkbox.layer.borderColor = isSelected ? UIColor.clear.cgColor : UIColor.systemGray.cgColor
-            cell.contentView.backgroundColor = isSelected ?  UIColor.placeholderText : UIColor.clear
-        }
-    }
 }
 
 //MARK: configure UI elements
-extension ViewController {
+extension ViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func configureTopView() {
         topView.translatesAutoresizingMaskIntoConstraints = false
         //        topView.backgroundColor = .red
@@ -150,5 +79,80 @@ extension ViewController {
         //        editButton.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         editButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
         editButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+    }
+}
+
+extension ViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! MailListCell
+        
+        cell.senderLabel.text = "some sender"
+        cell.subjectLabel.text = "some subject"
+        cell.mailContentLabel.text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+        cell.timeLabel.text = "hh:mm"
+        cell.arrowLabel.text = ">"
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: view.frame.width + 60, height: 90)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 100
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        if isEditingMode {
+            print("tapped for selection")
+            updateCellSelection(at: indexPath, isSelected: true)
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        if isEditingMode {
+            print("tapped for deselction")
+            updateCellSelection(at: indexPath, isSelected: false)
+        }
+    }
+    
+    func updateCellSelection(at indexPath: IndexPath, isSelected: Bool) {
+        if let cell = mailListCollectionView.cellForItem(at: indexPath) as? MailListCell {
+            let tickmark = UIImage(systemName: "checkmark.circle.fill")
+            cell.checkbox.image = isSelected ? tickmark : nil
+            cell.checkbox.layer.borderColor = isSelected ? UIColor.clear.cgColor : UIColor.systemGray.cgColor
+            cell.contentView.backgroundColor = isSelected ?  UIColor.placeholderText : UIColor.clear
+        }
+    }
+}
+
+extension ViewController {
+    @objc func handleEditButton() {
+        if isEditingMode {
+            editButton.setTitle("Edit", for: .normal)
+            UIView.animate(withDuration: 0.36) {
+                self.mailListCollectionView.transform = CGAffineTransform(translationX: 0, y: 0)
+                self.mailListCollectionView.scrollIndicatorInsets = .zero
+            }
+            isEditingMode = false
+            
+            //change the background color of cells to clear after selecting cancel while in editing mode
+            if let selectedIndexPaths = mailListCollectionView.indexPathsForSelectedItems {
+                for indexPath in selectedIndexPaths {
+                    mailListCollectionView.deselectItem(at: indexPath, animated: false)
+                    updateCellSelection(at: indexPath, isSelected: false)
+                }
+            }
+        }
+        else {
+            editButton.setTitle("Cancel", for: .normal)
+            UIView.animate(withDuration: 0.36) {
+                self.mailListCollectionView.transform = CGAffineTransform(translationX: 35, y: 0)
+                let inset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 35)
+                self.mailListCollectionView.scrollIndicatorInsets = inset
+            }
+            isEditingMode = true
+        }
     }
 }
