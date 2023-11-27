@@ -77,7 +77,7 @@ class MailListCell: UICollectionViewCell {
         
         checkboxView.translatesAutoresizingMaskIntoConstraints = false
         checkboxView.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        checkboxView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+        checkboxView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 5).isActive = true
         checkboxView.widthAnchor.constraint(equalToConstant: 85).isActive = true
         checkboxView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         
