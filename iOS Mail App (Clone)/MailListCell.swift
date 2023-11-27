@@ -32,36 +32,36 @@ class MailListCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-//        backgroundColor = .systemGray6
+        //        backgroundColor = .systemGray6
         
         // Add custom separator line
         separatorLine.backgroundColor = UIColor.separator
-                separatorLine.translatesAutoresizingMaskIntoConstraints = false
-                contentView.addSubview(separatorLine)
-//        separatorLeadingConstraint = separatorLine.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16)
-//        separatorLeadingConstraint?.isActive = true
+        separatorLine.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(separatorLine)
+        //        separatorLeadingConstraint = separatorLine.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16)
+        //        separatorLeadingConstraint?.isActive = true
         NSLayoutConstraint.activate([
-                    separatorLine.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 70),
-                    separatorLine.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-                    separatorLine.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-                    separatorLine.heightAnchor.constraint(equalToConstant: 1)
-                ])
+            separatorLine.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 70),
+            separatorLine.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            separatorLine.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            separatorLine.heightAnchor.constraint(equalToConstant: 1)
+        ])
         
         senderLabel.font = UIFont.boldSystemFont(ofSize: 18)
         senderLabel.textColor = UIColor.black
         senderLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(senderLabel)
-
+        
         subjectLabel.font = UIFont.systemFont(ofSize: 16)
         subjectLabel.textColor = UIColor.black
         subjectLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(subjectLabel)
-
+        
         mailContentLabel.font = UIFont.systemFont(ofSize: 12)
         mailContentLabel.textColor = UIColor.gray
         mailContentLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(mailContentLabel)
-
+        
         timeLabel.font = UIFont.systemFont(ofSize: 12)
         timeLabel.textColor = UIColor.gray
         timeLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -72,7 +72,7 @@ class MailListCell: UICollectionViewCell {
         arrowLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(arrowLabel)
         
-//        checkboxView.backgroundColor = .systemGray3
+        //        checkboxView.backgroundColor = .systemGray3
         addSubview(checkboxView)
         
         checkboxView.translatesAutoresizingMaskIntoConstraints = false
@@ -85,13 +85,13 @@ class MailListCell: UICollectionViewCell {
             senderLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
             senderLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 70),
             senderLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-
+            
             subjectLabel.topAnchor.constraint(equalTo: senderLabel.bottomAnchor, constant: 8),
             subjectLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 70),
             subjectLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-
+            
             mailContentLabel.topAnchor.constraint(equalTo: subjectLabel.bottomAnchor, constant: 8),
-//            dateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            //            dateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             mailContentLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             mailContentLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 70),
             mailContentLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
@@ -121,41 +121,3 @@ class MailListCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 }
-
-//extension NotesCell {
-//    private func setupPanGesture() {
-//            panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture))
-//            circle.addGestureRecognizer(panGesture)
-//            circle.isUserInteractionEnabled = true
-//        }
-//    
-//    @objc func handlePan(gesture: UIPanGestureRecognizer) {
-//        let location = gesture.location(in: mailListCollectionView)
-//        
-//        switch gesture.state {
-//        case .began:
-//            if let indexPath = mailListCollectionView.indexPathForItem(at: location) {
-//                initialIndexPath = indexPath
-//                selectedIndexPaths.insert(indexPath)
-//                updateCellSelection(at: indexPath, isSelected: true)
-//            }
-//        case .changed:
-//            if let initialIndexPath = initialIndexPath {
-//                if let indexPath = mailListCollectionView.indexPathForItem(at: location), indexPath != initialIndexPath {
-//                    let currentDirection = calculateDirection(of: gesture)
-//                    
-//                    if currentDirection == .down {
-//                        deselectCells(from: indexPath, to: initialIndexPath)
-//                    } else {
-//                        deselectCells(from: initialIndexPath, to: indexPath)
-//                    }
-//                }
-//            }
-//        case .ended, .cancelled:
-//            initialIndexPath = nil
-//        default:
-//            break
-//        }
-//    }
-//
-//}
