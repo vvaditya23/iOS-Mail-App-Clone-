@@ -61,7 +61,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
 
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! NotesCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! MailListCell
         
         cell.senderLabel.text = "some sender"
         cell.subjectLabel.text = "some subject"
@@ -131,7 +131,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     }
     
     func updateCellSelection(at indexPath: IndexPath, isSelected: Bool) {
-        if let cell = mailListCollectionView.cellForItem(at: indexPath) as? NotesCell {
+        if let cell = mailListCollectionView.cellForItem(at: indexPath) as? MailListCell {
             let tickmark = UIImage(systemName: "checkmark.circle.fill")
             cell.checkbox.image = isSelected ? tickmark : nil
             cell.checkbox.layer.borderColor = isSelected ? UIColor.clear.cgColor : UIColor.systemGray.cgColor
@@ -167,7 +167,7 @@ extension ViewController {
         mailListCollectionView.dataSource = self
         
         mailListCollectionView = UICollectionView(frame: view.bounds, collectionViewLayout: configureLayout())
-        mailListCollectionView.register(NotesCell.self, forCellWithReuseIdentifier: "cell")
+        mailListCollectionView.register(MailListCell.self, forCellWithReuseIdentifier: "cell")
         mailListCollectionView.allowsMultipleSelection = true
         
         mailListCollectionView.dataSource = self

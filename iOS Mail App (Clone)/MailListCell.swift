@@ -7,7 +7,7 @@
 
 import UIKit
 
-class NotesCell: UICollectionViewCell {
+class MailListCell: UICollectionViewCell {
     
     let senderLabel = UILabel()
     let subjectLabel = UILabel()
