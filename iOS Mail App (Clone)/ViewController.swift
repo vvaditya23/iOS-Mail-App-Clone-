@@ -89,6 +89,14 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             isEditingMode = false
 //            mailListCollectionView.removeGestureRecognizer(pan)
             
+            //change the background color of cells to clear after selecting cancel while in editing mode
+            if let selectedIndexPaths = mailListCollectionView.indexPathsForSelectedItems {
+                        for indexPath in selectedIndexPaths {
+                            mailListCollectionView.deselectItem(at: indexPath, animated: false)
+                            updateCellSelection(at: indexPath, isSelected: false)
+                        }
+                    }
+            
 //            for indexPath in selectedIndexPaths {
 //                mailListCollectionView.deselectItem(at: indexPath, animated: false)
 //                if let cell = mailListCollectionView.cellForItem(at: indexPath) as? NotesCell {
