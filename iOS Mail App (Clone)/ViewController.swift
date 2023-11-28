@@ -15,12 +15,17 @@ class ViewController: UIViewController {
     
     var isEditingMode = false
     
+    var panGesture: UIPanGestureRecognizer?
+    var selectedIndexPaths = Set<IndexPath>()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         configureTopView()
         configureMailListCollectionView()
         configureEditButton()
+        
+        panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
     }
 }
 
@@ -124,6 +129,11 @@ extension ViewController: UICollectionViewDataSource {
             cell.checkbox.layer.borderColor = isSelected ? UIColor.clear.cgColor : UIColor.systemGray.cgColor
             cell.contentView.backgroundColor = isSelected ?  UIColor.placeholderText : UIColor.clear
         }
+        if isSelected {
+                    selectedIndexPaths.insert(indexPath)
+                } else {
+                    selectedIndexPaths.remove(indexPath)
+                }
     }
 }
 
@@ -131,22 +141,24 @@ extension ViewController {
     @objc func handleEditButton() {
         if isEditingMode {
             editButton.setTitle("Edit", for: .normal)
+            
+            // Remove the pan gesture recognizer
+            mailListCollectionView.removeGestureRecognizer(panGesture!)
+            
             UIView.animate(withDuration: 0.36) {
                 self.mailListCollectionView.transform = CGAffineTransform(translationX: 0, y: 0)
                 self.mailListCollectionView.scrollIndicatorInsets = .zero
             }
             isEditingMode = false
             
-            //change the background color of cells to clear after selecting cancel while in editing mode
-            if let selectedIndexPaths = mailListCollectionView.indexPathsForSelectedItems {
-                for indexPath in selectedIndexPaths {
-                    mailListCollectionView.deselectItem(at: indexPath, animated: false)
-                    updateCellSelection(at: indexPath, isSelected: false)
-                }
-            }
-        }
-        else {
+            // Clear selections
+            clearAllSelections()
+        } else {
             editButton.setTitle("Cancel", for: .normal)
+            
+            // Add the pan gesture recognizer
+            mailListCollectionView.addGestureRecognizer(panGesture!)
+            
             UIView.animate(withDuration: 0.36) {
                 self.mailListCollectionView.transform = CGAffineTransform(translationX: 35, y: 0)
                 let inset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 35)
@@ -155,4 +167,41 @@ extension ViewController {
             isEditingMode = true
         }
     }
+
+    func clearAllSelections() {
+            // Clear selections using the data structure
+            selectedIndexPaths.forEach { indexPath in
+                mailListCollectionView.deselectItem(at: indexPath, animated: false)
+                updateCellSelection(at: indexPath, isSelected: false)
+            }
+            selectedIndexPaths.removeAll()
+        }
+}
+
+extension ViewController {
+    @objc func handlePanGesture(_ gesture: UIPanGestureRecognizer) {
+        let translation = gesture.translation(in: view)
+
+        switch gesture.state {
+        case .began, .changed:
+            print("began")
+            if let indexPath = mailListCollectionView.indexPathForItem(at: gesture.location(in: mailListCollectionView)) {
+                        // Update the selection state based on the gesture
+                        updateCellSelection(at: indexPath, isSelected: true)
+                    }
+            
+        case .ended:
+            print("end")
+            
+        default:
+            break
+        }
+    }
+    
+//    deinit {
+//        if let panGesture = panGesture {
+//            view.removeGestureRecognizer(panGesture)
+//        }
+//    }
+
 }
