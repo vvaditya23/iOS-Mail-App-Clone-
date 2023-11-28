@@ -17,6 +17,8 @@ class ViewController: UIViewController {
     
     var panGesture: UIPanGestureRecognizer?
     var selectedIndexPaths = Set<IndexPath>()
+    var displayLink: CADisplayLink?
+    var isAutoScrolling = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,6 +28,7 @@ class ViewController: UIViewController {
         configureEditButton()
         
         panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
+        panGesture?.delegate = self
     }
 }
 
@@ -67,7 +70,7 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDelegateFlow
         mailListCollectionView.topAnchor.constraint(equalTo: topView.bottomAnchor, constant: 0).isActive = true
         mailListCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: -60).isActive = true
         mailListCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        mailListCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        mailListCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
     
     func configureEditButton() {
@@ -131,8 +134,10 @@ extension ViewController: UICollectionViewDataSource {
         }
         if isSelected {
                     selectedIndexPaths.insert(indexPath)
+            print(selectedIndexPaths)
                 } else {
                     selectedIndexPaths.remove(indexPath)
+                    print(selectedIndexPaths)
                 }
     }
 }
@@ -167,18 +172,27 @@ extension ViewController {
             isEditingMode = true
         }
     }
-
+    
     func clearAllSelections() {
-            // Clear selections using the data structure
-            selectedIndexPaths.forEach { indexPath in
-                mailListCollectionView.deselectItem(at: indexPath, animated: false)
-                updateCellSelection(at: indexPath, isSelected: false)
-            }
-            selectedIndexPaths.removeAll()
+        // Clear selections using the data structure
+        selectedIndexPaths.forEach { indexPath in
+            mailListCollectionView.deselectItem(at: indexPath, animated: false)
+            updateCellSelection(at: indexPath, isSelected: false)
         }
+        selectedIndexPaths.removeAll()
+    }
 }
 
-extension ViewController {
+extension ViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+            // Check if the pan gesture is within the left 100 points
+            let touchPoint = panGesture?.location(in: view)
+            if touchPoint?.x ?? 0 < 100 {
+                return false
+            }
+            return true
+        }
+    
     @objc func handlePanGesture(_ gesture: UIPanGestureRecognizer) {
         let translation = gesture.translation(in: view)
 
@@ -186,18 +200,104 @@ extension ViewController {
         case .began, .changed:
             print("began")
             if let indexPath = mailListCollectionView.indexPathForItem(at: gesture.location(in: mailListCollectionView)) {
-                        // Update the selection state based on the gesture
-                        updateCellSelection(at: indexPath, isSelected: true)
-                    }
-            
+                // Update the selection state based on the gesture
+                let isSwipingDown = translation.y < 0
+                
+                // Toggle the selection state based on the swipe direction
+                updateCellSelection(at: indexPath, isSelected: !isSwipingDown)
+
+                // Check if the user is swiping near the top or bottom
+                let topThreshold: CGFloat = 50
+                let bottomThreshold = view.bounds.maxY - 50
+
+                if isSwipingDown && gesture.location(in: view).y > bottomThreshold {
+                    // Start scrolling the collection view automatically downwards
+//                    startAutoScroll()
+                } else if !isSwipingDown && gesture.location(in: view).y < topThreshold {
+                    // Start scrolling the collection view automatically upwards
+//                    startAutoScrollUpwards()
+                } else {
+                    // Stop auto-scrolling if not near the top or bottom
+//                    stopAutoScroll()
+                }
+            }
+
         case .ended:
             print("end")
-            
+            // Stop auto-scrolling when the gesture ends
+//            stopAutoScroll()
+
         default:
             break
         }
     }
-    
+
+//        func startAutoScroll() {
+//            guard !isAutoScrolling else { return }
+//
+//            isAutoScrolling = true
+//            displayLink = CADisplayLink(target: self, selector: #selector(autoScroll))
+//            displayLink?.add(to: .main, forMode: .common)
+//        }
+//
+//        func stopAutoScroll() {
+//            isAutoScrolling = false
+//            displayLink?.invalidate()
+//            displayLink = nil
+//        }
+//
+//    func startAutoScrollUpwards() {
+//        guard !isAutoScrolling else { return }
+//
+//        isAutoScrolling = true
+//        displayLink = CADisplayLink(target: self, selector: #selector(autoScrollUpwards))
+//        displayLink?.add(to: .main, forMode: .common)
+//    }
+//
+//    @objc func autoScrollUpwards() {
+//        // Adjust the scrolling speed as needed
+//        let scrollingSpeed: CGFloat = 5.0
+//
+//        let newContentOffsetY = mailListCollectionView.contentOffset.y - scrollingSpeed
+//        
+//        // Check if reaching the top
+//        if newContentOffsetY < 0 {
+//            // Stop auto-scrolling
+//            stopAutoScroll()
+//            return
+//        }
+//
+//        mailListCollectionView.setContentOffset(CGPoint(x: 0, y: newContentOffsetY), animated: false)
+//    }
+//
+//    @objc func autoScroll() {
+//        // Adjust the scrolling speed as needed
+//        let scrollingSpeed: CGFloat = 5.0
+//
+//        let newContentOffsetY = mailListCollectionView.contentOffset.y + scrollingSpeed
+//        
+//        // Check if reaching the bottom
+//        if newContentOffsetY > mailListCollectionView.contentSize.height - mailListCollectionView.bounds.height {
+//            // Stop auto-scrolling
+//            stopAutoScroll()
+//            return
+//        }
+//
+//        mailListCollectionView.setContentOffset(CGPoint(x: 0, y: newContentOffsetY), animated: false)
+//    }
+
+//    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+//            if gestureRecognizer == panGesture {
+//                // Check if the pan gesture is within the left 100 points
+//                let touchPoint = gestureRecognizer.location(in: view)
+//                if touchPoint.x < 100 {
+//                    // Do not recognize simultaneously if swiping in the left 100 points
+//                    return false
+//                }
+//            }
+//            // Recognize simultaneously for other cases
+//            return true
+//        }
 //    deinit {
 //        if let panGesture = panGesture {
 //            view.removeGestureRecognizer(panGesture)
