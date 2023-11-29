@@ -17,8 +17,16 @@ class ViewController: UIViewController {
     
     var panGesture: UIPanGestureRecognizer?
     var selectedIndexPaths = Set<IndexPath>()
+    var tapSelectedRows = Set<IndexPath>()
     var displayLink: CADisplayLink?
     var isAutoScrolling = false
+    
+    var initialPosition : CGFloat = 0.0
+    var isDesectingFirst = false
+    var initialIndexPath : IndexPath?
+    var isFingerInMovement = false
+    var isPanActive = false
+    var initialDirection = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -193,25 +201,121 @@ extension ViewController: UIGestureRecognizerDelegate {
             return true
         }
     
-    @objc func handlePanGesture(_ gesture: UIPanGestureRecognizer) {
-        let translation = gesture.translation(in: view)
-
-        switch gesture.state {
-        case .began, .changed:
-            print("began")
-            if let indexPath = mailListCollectionView.indexPathForItem(at: gesture.location(in: mailListCollectionView)) {
-                // Update the selection state based on the gesture
-                let isSwipingDown = translation.y < 0
-                
-                // Toggle the selection state based on the swipe direction
-                updateCellSelection(at: indexPath, isSelected: !isSwipingDown)
+    @objc func handlePanGesture(_ gestureRecognizer: UIPanGestureRecognizer) {
+        let location = gestureRecognizer.location(in: mailListCollectionView)
+        
+        switch gestureRecognizer.state {
+        case .began:
+            
+            initialPosition = location.y
+            if let indexPath = mailListCollectionView.indexPathForItem(at: location) {
+                if selectedIndexPaths.contains(indexPath) {
+                    isDesectingFirst = true
+                    handleDeSelection(at: indexPath, isSelected: false)
+                }
+                else {
+                    handleCellSelection(at: indexPath, isSelected: true)
+                }
+                initialIndexPath = indexPath
             }
-
-        case .ended:
-            print("end")
-
+            
+        case .changed:
+            let velocity = gestureRecognizer.velocity(in: mailListCollectionView)
+            let currentDirection = getDirection(velocity)
+            isFingerInMovement = true
+            
+            if isPanActive == false {
+                isPanActive = true
+                initialDirection = getDirection(velocity)
+            }
+            // new pan on already selected
+            if isDesectingFirst {
+                if let indexPath = mailListCollectionView.indexPathForItem(at: location) {
+                    if tapSelectedRows.contains(indexPath) {
+                        tapSelectedRows.remove(indexPath)
+                    }
+                    handleDeSelection(at: indexPath, isSelected: false)
+                }
+            }
+            
+            else {
+                
+                if initialDirection == "Down" {
+                    if currentDirection == "Down" {
+                        if let indexPath = mailListCollectionView.indexPathForItem(at: location) {
+                            handleCellSelection(at: indexPath, isSelected: true)
+                        }
+                    }
+                    else {
+                        if location.y < initialPosition {
+                            initialDirection = "Up"
+                        }
+                        else {
+                            if let indexPath = mailListCollectionView.indexPathForItem(at: location) {
+                                if indexPath != initialIndexPath {
+                                    if !tapSelectedRows.contains(indexPath) {
+                                        handleDeSelection(at: indexPath, isSelected: false)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                else if initialDirection == "Up" {
+                    if currentDirection == "Up" {
+                        if let indexPath = mailListCollectionView.indexPathForItem(at: location) {
+                            handleCellSelection(at: indexPath, isSelected: true)
+                        }
+                    } else {
+                        if location.y > initialPosition {
+                            initialDirection = "Down"
+                        }
+                        if let indexPath = mailListCollectionView.indexPathForItem(at: location) {
+                            if indexPath != initialIndexPath {
+                                if !tapSelectedRows.contains(indexPath) {
+                                    handleDeSelection(at: indexPath, isSelected: false)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         default:
+            isDesectingFirst = false
+            isPanActive = false
+            isFingerInMovement = false
             break
         }
+    }
+    
+    func handleDeSelection(at indexPath: IndexPath, isSelected: Bool) {
+        if let cell = mailListCollectionView.cellForItem(at: indexPath) as? MailListCell {
+            let tickmark = UIImage(systemName: "checkmark.circle.fill")
+            cell.checkbox.image = isSelected ? tickmark : nil
+            cell.checkbox.layer.borderColor = isSelected ? UIColor.clear.cgColor : UIColor.systemGray.cgColor
+            cell.contentView.backgroundColor = isSelected ?  UIColor.placeholderText : UIColor.clear
+        }
+        if selectedIndexPaths.contains(indexPath) {
+            selectedIndexPaths.remove(indexPath)
+            mailListCollectionView.deselectItem(at: indexPath, animated: false)
+        }
+    }
+    
+    func handleCellSelection(at indexPath: IndexPath, isSelected: Bool) {
+        if let cell = mailListCollectionView.cellForItem(at: indexPath) as? MailListCell {
+            let tickmark = UIImage(systemName: "checkmark.circle.fill")
+            cell.checkbox.image = isSelected ? tickmark : nil
+            cell.checkbox.layer.borderColor = isSelected ? UIColor.clear.cgColor : UIColor.systemGray.cgColor
+            cell.contentView.backgroundColor = isSelected ?  UIColor.placeholderText : UIColor.clear
+        }
+        if !selectedIndexPaths.contains(indexPath) {
+            selectedIndexPaths.insert(indexPath)
+            mailListCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
+        }
+    }
+    
+    func getDirection(_ velocity: CGPoint) -> String {
+        let direction = velocity.y > 0 ? "Down" : "Up"
+        return direction
     }
 }
